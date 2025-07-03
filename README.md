@@ -15,7 +15,7 @@ sprocket/
 ├── backend/            # FastAPI app
 │   ├── main.py
 │   ├── routes/         # API route definitions (FastAPI)
-│   ├── spike/          # SPIKE Prime hub communication (Bluetooth/USB, commands, etc)
+│   ├── hub/            # SPIKE Prime hub communication (Bluetooth/USB, commands, etc)
 │   └── Dockerfile      # backend container definition
 ├── ios/                # iOS SwiftUI app
 ├── docker-compose.yml  # orchestrates backend (and future services)
@@ -61,3 +61,31 @@ sprocket/
 1. Open `ios/SprocketApp.xcodeproj` in Xcode.
 2. Select your device or simulator.
 3. Build and run the app.
+
+---
+
+## 🛠️ System Architecture Overview
+
+This project consists of several components working together to control Sprocket, the robot:
+
+### Components
+
+```mermaid
+flowchart LR
+    A["iOS App"] -- "HTTP Request" --> B["Backend API: FastAPI on Pi"]
+    B -- "BLE Command" --> C["Sprocket's Brain: SPIKE Hub, Pybricks"]
+    C -- "Robot Actions" --> D["Motors/Sensors"]
+    B -- "AI/Processing" --> E["Camera/AI on Pi"]
+```
+
+- **iOS App:** User interface for sending commands (e.g., “Hey Sprocket, dance for me!”) to the robot.
+- **Backend:** Receives commands from the iOS app over HTTP, may use AI (e.g., camera, person detection), and sends commands to the SPIKE Hub via Bluetooth.
+- **Sprocket's Brain (SPIKE Prime Hub, Pybricks):** Runs a listener script uploaded via Pybricks, receives commands from the backend, and controls the robot's motors, sensors, and display.
+
+### Deployment Summary
+
+| Component         | Language | Deployment Method        | Runs On         |
+|-------------------|----------|--------------------------|-----------------|
+| iOS App           | Swift    | Xcode/TestFlight         | iPhone          |
+| Backend           | Python   | Docker Compose           | Raspberry Pi    |
+| SPIKE Hub Code    | Python   | Pybricks upload          | SPIKE Prime Hub |

@@ -1,2 +1,5 @@
 fastapi
 uvicorn
+pybricks
+pybricksdev
+bleak
