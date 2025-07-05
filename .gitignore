@@ -1,0 +1,16 @@
+# Python/uv/venv
+backend/.venv/
+backend/__pycache__/
+backend/uv.lock
+*.pyc
+
+# macOS
+.DS_Store
+
+# Xcode
+ios/DerivedData/
+ios/*.xcworkspace/
+ios/*.xcuserstate
+
+# General
+.env
